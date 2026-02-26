@@ -774,6 +774,19 @@ export namespace Video {
         /** ISO Date */
         when: string;
     }
+
+    export interface LmsScormRequest {
+        /**
+         * video will be marked as complete in lms after the specified percent watched is hit.
+         * @default 80
+         */
+        completionPercentage?: number;
+        /**
+         * allow / block changing the speed of the video
+         * @default false
+         */
+        allowSpeedChanges?: boolean;
+    }
 }
 
 /** @category Videos */
