@@ -120,6 +120,9 @@ export namespace Video {
         /** An array of customFields that is attached to the  */
         customFields?: Admin.CustomField.Request[];
 
+        /**
+         * This enables the video to bypass transcoding. Doesn't work with audio only files like mp3
+         */
         doNotTranscode?: boolean;
         is360?: boolean;
 
@@ -153,7 +156,10 @@ export namespace Video {
          * NOTE: Feature must be enabled (contact Vbrick Support)
          */
         sensitiveContent?: boolean;
-
+        /**
+         * Additional domains from which viewers can view this video via an embed. This field is only applicable if the account admin has enabled additional domains for embeds. Do not add https:// to the domain string or it will fail.
+         */
+        additionalEmbedDomains?: string[];
         /**
          * Retain the total views count from an outside system as an optional param.
          */
@@ -357,6 +363,18 @@ export namespace Video {
         viewerIdEnabled: boolean;
         enableAutoShowChapterImages: boolean;
         sensitiveContent: boolean;
+        /**
+         * If enabled, embedding of videos is restricted to a list of domains managed by your Account Admin
+         */
+        domainAllowlistEnabled: boolean
+        /**
+         * If enabled, additional domains from which viewers can view this video can be added.
+         */
+        allowAdditionalDomainsEnabled: boolean
+        /**
+         * Additional domains from which viewers can view this video via an embed.
+         */
+        additionalEmbedDomains: null | string[]
     }
 
     export interface PatchRequest {
@@ -372,11 +390,12 @@ export namespace Video {
         enableExternalApplicationAccess?: boolean;
         enableExternalViewersAccess?: boolean;
         videoAccessControl?: AccessControl;
-        accessControlEntities: string | string[];
-        customFields: Admin.CustomField.Request[];
+        accessControlEntities?: string | string[];
+        customFields?: Admin.CustomField.Request[];
         unlisted?: boolean;
         userTags?: string[];
         sensitiveContent?: boolean;
+        additionalEmbedDomains?: string[];
     }
 
     export interface StatusResponse {

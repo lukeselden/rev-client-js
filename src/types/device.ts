@@ -50,6 +50,7 @@ export namespace Device {
         isVideoStorageDevice: boolean;
         dmeStatus: DmeHealthStatus;
         ipAddress: string;
+        sslExpiryDate: string;
     }
     export interface CreateDMERequest {
         /**
