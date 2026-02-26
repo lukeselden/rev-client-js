@@ -587,9 +587,9 @@ export namespace Webcast {
     export interface BrandingRequest {
         branding: Omit<Webcast.BrandingSettings, 'logos'>
         logoImage: Rev.FileUploadType,
-        logoImageOptions?: Exclude<Upload.ImageOptions, Rev.RequestOptions>
+        logoImageOptions?: {[K in Exclude<keyof Upload.ImageOptions, keyof Rev.RequestOptions>]: Upload.ImageOptions[K]}
         backgroundImage: Rev.FileUploadType,
-        backgroundImageOptions?: Exclude<Upload.ImageOptions, Rev.RequestOptions>
+        backgroundImageOptions?: {[K in Exclude<keyof Upload.ImageOptions, keyof Rev.RequestOptions>]: Upload.ImageOptions[K]}
 
     }
 

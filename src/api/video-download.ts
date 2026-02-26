@@ -100,7 +100,7 @@ export function videoDownloadAPI(rev: RevClient) {
             thumbnailSheetsUri = thumbnailSheet;
         } else if (thumbnailSheet && typeof thumbnailSheet === 'object' && 'thumbnailSheetsUri' in thumbnailSheet) {
             thumbnailSheetsUri = thumbnailSheet.thumbnailSheetsUri;
-        } else if (thumbnailSheet?.videoId) {
+        } else if ('videoId' in thumbnailSheet && !!thumbnailSheet.videoId) {
             const {videoId, sheetIndex = '1'} = thumbnailSheet;
             thumbnailSheetsUri = `/api/v2/videos/${videoId}/thumbnail-sheets/${sheetIndex}`;
         }
