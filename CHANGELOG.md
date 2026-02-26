@@ -1,3 +1,16 @@
+## 0.25.4
+
+* Update types for Rev 8.4
+* Add `device.getLogs()` and `device.prepositionVideos()` endpoints
+* Add `video.downloadLmsScormPackage()` endpoint
+
+**NOTE** Future versions will switch to `tsdown` for building instead of the deprecated `tsup`
+
+## 0.25.3
+
+* Minor: ensure customfield passed to `video.setCustomField()` only has `id` and `value` parameters.
+* Bugfix: avoid NegativeTimeout warning on node v24
+
 ## 0.25.2
 
 * Bugfix - `video.deleteTranscriptions()` was calling wrong endpoint
