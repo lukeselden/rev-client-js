@@ -1,10 +1,22 @@
+### UPCOMING CHANGES
+
+* **BUILD** Future versions will switch to `tsdown` for building instead of the deprecated `tsup`
+* **PLATFORMS** Remove commonjs support now that nodejs has improved ESM support
+* When uploading the `MKV` mimetype may change from `video/x-matroska` to `video/matroska` as browsers no longer treate the format as experimental
+
+
+## 0.25.5
+
+* Update build targets to minimum node 20
+* Bugfix: Set View Report (`video.report()`) rate limiting to 30
+* Minor: Export `Channel.RoleType` enum
+* Minor: Improve IDE autocomplete for `Video.SearchOptions` type
+
 ## 0.25.4
 
 * Update types for Rev 8.4
 * Add `device.getLogs()` and `device.prepositionVideos()` endpoints
 * Add `video.downloadLmsScormPackage()` endpoint
-
-**NOTE** Future versions will switch to `tsdown` for building instead of the deprecated `tsup`
 
 ## 0.25.3
 
