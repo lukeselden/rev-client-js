@@ -409,7 +409,7 @@ export namespace Video {
         whenUploaded: string;
     }
 
-    export interface SearchOptions {
+    export interface BaseSearchOptions {
         /** text to search for */
         q?: string;
         /** specific videoIds to search for */
@@ -480,12 +480,19 @@ export namespace Video {
 
         /** Number of videos to get (default is 50) */
         count?: number;
+    }
 
+    /**
+     * Filter criteria for searching for videos.
+     * See [Search API Docs](https://revdocs.vbrick.com/reference/searchvideo) for details
+     * Any non-documented keys are treated as a Custom Field query
+     */
+    export type SearchOptions = {
         /**
          * search for videos matching specific custom field values.
          * Object in the format {My_Custom_Field_Name: "MyCustomFieldValue"}
          */
-        [key: string]: any;
+        [K in LiteralString<keyof BaseSearchOptions>]?: K extends keyof BaseSearchOptions ? BaseSearchOptions[K]: unknown
     }
 
     export interface Playback {
