@@ -464,7 +464,7 @@ var init_rate_limit_queues = __esm({
       ["attendeesRealtime" /* GetWebcastAttendeesRealtime */]: 2,
       ["auditEndpoint" /* AuditEndpoints */]: 60,
       ["loginReport" /* GetUsersByLoginDate */]: 10,
-      ["viewReport" /* GetVideoViewReport */]: 120
+      ["viewReport" /* GetVideoViewReport */]: 30
     };
     fn = () => Promise.resolve();
   }

@@ -899,7 +899,7 @@ declare namespace Video {
         uploadedBy: string;
         whenUploaded: string;
     }
-    interface SearchOptions {
+    interface BaseSearchOptions {
         /** text to search for */
         q?: string;
         /** specific videoIds to search for */
@@ -960,12 +960,15 @@ declare namespace Video {
         filter?: SearchFilterEnum;
         /** Number of videos to get (default is 50) */
         count?: number;
-        /**
-         * search for videos matching specific custom field values.
-         * Object in the format {My_Custom_Field_Name: "MyCustomFieldValue"}
-         */
-        [key: string]: any;
     }
+    /**
+     * Filter criteria for searching for videos.
+     * See [Search API Docs](https://revdocs.vbrick.com/reference/searchvideo) for details
+     * Any non-documented keys are treated as a Custom Field query
+     */
+    type SearchOptions = {
+        [K in LiteralString<keyof BaseSearchOptions>]?: K extends keyof BaseSearchOptions ? BaseSearchOptions[K] : unknown;
+    };
     interface Playback {
         id: string;
         title: string;
@@ -1642,10 +1645,11 @@ declare namespace Category {
 */
 declare namespace Channel {
     type SortOrder = LiteralString<'whenUploaded' | 'recommended' | 'title' | 'viewCount'>;
+    type RoleType = LiteralString<'Admin' | 'Contributor' | 'Uploader' | 'Member'>;
     interface Member {
         id: string;
         type: LiteralString<'User' | 'Group'>;
-        roleTypes: LiteralString<'Admin' | 'Contributor' | 'Uploader' | 'Member'>[];
+        roleTypes: Channel.RoleType[];
     }
     interface CreateRequest {
         name: string;

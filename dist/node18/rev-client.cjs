@@ -397,7 +397,7 @@ var defaultRateLimits = {
   ["attendeesRealtime" /* GetWebcastAttendeesRealtime */]: 2,
   ["auditEndpoint" /* AuditEndpoints */]: 60,
   ["loginReport" /* GetUsersByLoginDate */]: 10,
-  ["viewReport" /* GetVideoViewReport */]: 120
+  ["viewReport" /* GetVideoViewReport */]: 30
 };
 var fn = () => Promise.resolve();
 function normalizeRateLimitOptions(rateLimits) {
