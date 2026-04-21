@@ -1911,46 +1911,43 @@ function playlistAPIFactory(rev) {
       };
       return rev.put(`/api/v2/playlists/featured-playlist`, payload);
     },
+    async updateOwners(playlistId, ownerIds) {
+      const owners = Array.isArray(ownerIds) ? ownerIds : [ownerIds];
+      return rev.put(`/api/v2/playlists/${playlistId}/owners`, { owners });
+    },
     async delete(playlistId) {
       return rev.delete(`/api/v2/playlists/${playlistId}`);
     },
     /**
      * get list of playlists in system.
-     * NOTE: return type is slightly different than API documentation
+     * NOTE: return type is slightly different than API documentation to ensure consistent output regardless of API response format
      * @see {@link https://revdocs.vbrick.com/reference#getplaylists}
      */
     async list() {
-      function parsePlaylist(entry) {
-        const {
-          id,
-          playlistId,
-          featurePlaylistId,
-          featuredPlaylist,
-          name,
-          playlistName,
-          ...extra
-        } = entry;
+      const rawResult = await rev.get("/api/v2/playlists", void 0, { responseType: "json" });
+      if (Array.isArray(rawResult)) {
         return {
-          ...extra,
-          id: id ?? playlistId ?? featurePlaylistId ?? featuredPlaylist,
-          name: name ?? playlistName,
-          videos: entry.videos ?? entry.Videos
+          playlists: rawResult
         };
       }
-      const rawResult = await rev.get("/api/v2/playlists", void 0, { responseType: "json" });
-      const hasFeatured = !Array.isArray(rawResult);
-      const rawPlaylists = hasFeatured ? rawResult.playlists : rawResult;
-      const output = {
-        playlists: rawPlaylists.map(parsePlaylist)
+      const {
+        featuredPlaylist,
+        publicFeaturedPlaylist,
+        playbackUrl,
+        videos,
+        playlists
+      } = rawResult;
+      return {
+        ...featuredPlaylist && {
+          featuredPlaylist: {
+            id: featuredPlaylist,
+            playbackUrl,
+            videos
+          }
+        },
+        ...publicFeaturedPlaylist && { publicFeaturedPlaylist },
+        playlists
       };
-      if (hasFeatured) {
-        if (isPlainObject(rawResult.featuredPlaylist)) {
-          output.featuredPlaylist = parsePlaylist(rawResult.featuredPlaylist);
-        } else if (Array.isArray(rawResult.videos)) {
-          output.featuredPlaylist = parsePlaylist(rawResult);
-        }
-      }
-      return output;
     }
   };
   return playlistAPI;

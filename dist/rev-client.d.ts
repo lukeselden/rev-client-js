@@ -955,6 +955,10 @@ declare namespace Video {
          */
         channelId?: string;
         /**
+         * Multiple channelIds, separated by comma. User should have rights to the channels
+         */
+        channelIds?: string;
+        /**
          * Filter the results based on the channels and categories the Principal is subscribed OR apply the recommendation logic which boosts search results based on recent viewing history using up to the last 10 videos viewed by a user.
          */
         filter?: SearchFilterEnum;
@@ -1035,6 +1039,14 @@ declare namespace Video {
         viewingStartTime: string;
         viewingEndTime: string;
         userId: string;
+        geoLocation?: Video.GeoLocationResponse;
+    }
+    interface GeoLocationResponse {
+        continent?: string;
+        country?: string;
+        region?: string;
+        city?: string;
+        postalCode?: string;
     }
     interface VideoReportOptions extends Rev.SearchOptions<VideoReportEntry> {
         videoIds?: string | string[] | undefined;
@@ -2242,6 +2254,7 @@ declare namespace User {
 interface Playlist {
     id: string;
     name: string;
+    owners?: Playlist.Owner[];
     playbackUrl: string;
     playlistType?: Playlist.PlaylistTypeEnum;
     videos?: Playlist.Video[];
@@ -2250,8 +2263,14 @@ interface Playlist {
 /** @category Playlists */
 declare namespace Playlist {
     type PlaylistTypeEnum = LiteralString<'Static' | 'Dynamic'>;
+    interface Featured {
+        id: string;
+        playbackUrl: string | null;
+        videos: Playlist.Video[];
+    }
     interface List {
-        featuredPlaylist?: Playlist;
+        featuredPlaylist?: Playlist.Featured;
+        publicFeaturedPlaylist?: Playlist.Featured;
         playlists: Playlist[];
     }
     interface Video {
@@ -2276,12 +2295,19 @@ declare namespace Playlist {
     interface DetailsResponse {
         playlistId: string;
         playlistType: PlaylistTypeEnum;
+        owners: Playlist.Owner[];
         playlistDetails: Omit<Playlist, 'videos'> & {
             videos?: undefined;
         };
         videos: Video.Details[];
         scrollId?: string;
         totalVideos?: string;
+    }
+    interface Owner {
+        firstName: string;
+        lastName: string;
+        userId: string;
+        userName: string;
     }
 }
 
@@ -2716,6 +2742,14 @@ declare namespace Webcast {
         rebufferEvents: number;
         rebufferDuration: number;
         attendeeType: LiteralString<'Host' | 'Moderator' | 'AccountAdmin' | 'Attendee'>;
+        polls?: PollResponse[] | null;
+        geoLocation?: Video.GeoLocationResponse | null;
+    }
+    interface PollResponse {
+        pollId: string;
+        question: string;
+        answers: string;
+        when: string;
     }
     interface RealtimeRequest {
         sortField?: RealtimeField;
@@ -2775,6 +2809,7 @@ declare namespace Webcast {
         streamType: string;
         sessionId: string;
         profileImageUrl: string;
+        geoLocation?: Video.GeoLocationResponse;
     }
     interface Question {
         questionId: string;
@@ -3683,6 +3718,7 @@ declare class PlaylistDetailsRequest extends SearchRequest<Video.Details> {
         searchFilter: Video.SearchOptions | undefined;
         name: string;
         id: string;
+        owners: Playlist.Owner[];
         playbackUrl: string;
         playlistType: (string & Record<never, never>) | "Static" | "Dynamic";
         playlistId: string;
@@ -3714,10 +3750,11 @@ declare function playlistAPIFactory(rev: RevClient): {
     }, options?: Rev.SearchOptions<Video.Details>): PlaylistDetailsRequest;
     update(playlistId: string, actions: Playlist.UpdateAction[] | Video.SearchOptions): Promise<void>;
     updateFeatured(actions: Playlist.UpdateAction[]): Promise<void>;
+    updateOwners(playlistId: string, ownerIds: string | string[]): Promise<any>;
     delete(playlistId: string): Promise<void>;
     /**
      * get list of playlists in system.
-     * NOTE: return type is slightly different than API documentation
+     * NOTE: return type is slightly different than API documentation to ensure consistent output regardless of API response format
      * @see {@link https://revdocs.vbrick.com/reference#getplaylists}
      */
     list(): Promise<Playlist.List>;
