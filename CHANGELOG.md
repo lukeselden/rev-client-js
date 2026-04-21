@@ -4,6 +4,14 @@
 * **PLATFORMS** Remove commonjs support now that nodejs has improved ESM support
 * When uploading the `MKV` mimetype may change from `video/x-matroska` to `video/matroska` as browsers no longer treate the format as experimental
 
+## 0.25.6
+
+* Update types for Rev 8.5
+* Implement new playlist API endpoints
+
+#### Breaking Changes
+
+* `rev.playlist.list()` may not parse API results for On-Prem Rev versions earlier than 7.54
 
 ## 0.25.5
 
