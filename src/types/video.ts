@@ -572,6 +572,15 @@ export namespace Video {
         viewingStartTime: string;
         viewingEndTime: string;
         userId: string;
+        geoLocation?: Video.GeoLocationResponse;
+    }
+    export interface GeoLocationResponse {
+        continent?: string;
+        country?: string;
+        // state or province
+        region?: string;
+        city?: string;
+        postalCode?: string;
     }
     export interface VideoReportOptions extends Rev.SearchOptions<VideoReportEntry> {
         videoIds?: string | string[] | undefined;

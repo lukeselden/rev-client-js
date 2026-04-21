@@ -433,6 +433,14 @@ export namespace Webcast {
         rebufferEvents: number;
         rebufferDuration: number;
         attendeeType: LiteralString<'Host' | 'Moderator' | 'AccountAdmin' | 'Attendee'>;
+        polls?: PollResponse[] | null;
+        geoLocation?: Video.GeoLocationResponse | null;
+    }
+    export interface PollResponse {
+        pollId: string;
+        question: string;
+        answers: string;
+        when: string;
     }
 
     export interface RealtimeRequest {
@@ -496,6 +504,7 @@ export namespace Webcast {
         streamType: string;
         sessionId: string;
         profileImageUrl: string;
+        geoLocation?: Video.GeoLocationResponse;
     }
 
     export interface Question {
