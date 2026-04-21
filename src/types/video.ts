@@ -472,6 +472,10 @@ export namespace Video {
          * If channelId provided, videos in that particular channel are returned. User should have rights to the channel
          */
         channelId?: string;
+        /**
+         * Multiple channelIds, separated by comma. User should have rights to the channels
+         */
+        channelIds?: string;
 
         /**
          * Filter the results based on the channels and categories the Principal is subscribed OR apply the recommendation logic which boosts search results based on recent viewing history using up to the last 10 videos viewed by a user.
